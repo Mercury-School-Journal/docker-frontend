@@ -10,8 +10,7 @@ services:
     restart: "no"
 
   nginx:
-    build: .
-    container_name: nginx
+    image: pawi1/nginx
     volumes:
       - www:/usr/share/nginx/
     depends_on:

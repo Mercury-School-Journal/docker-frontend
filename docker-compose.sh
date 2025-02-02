@@ -43,11 +43,11 @@ if [ ! -f "$DOCKER_COMPOSE_ARM64" ]; then
 fi
 
 if [ "$(uname -m)" = "x86_64" ]; then
-    docker-compose -f docker-compose-amd64.yml down --rmi all -v
+    docker-compose -f docker-compose-amd64.yml down -v
     docker-compose -f docker-compose-amd64.yml up
-    docker-compose -f docker-compose-amd64.yml down --rmi all -v
+    docker-compose -f docker-compose-amd64.yml down -v
 else 
-    docker-compose -f docker-compose-arm64.yml down --rmi all -v
+    docker-compose -f docker-compose-arm64.yml down -v
     docker-compose -f docker-compose-arm64.yml up
-    docker-compose -f docker-compose-arm64.yml down --rmi all -v
+    docker-compose -f docker-compose-arm64.yml down -v
 fi
