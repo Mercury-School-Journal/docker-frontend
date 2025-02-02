@@ -1,0 +1,44 @@
+services:
+  git:
+    image: pawi1/git:arm64
+    volumes:
+      - www:/home/git
+    user: "0"
+    command: clone https://github.com/Mercury-School-Journal/mercury-school-journal.github.io html
+    networks:
+      - internal_net
+    restart: "no"
+
+  nginx:
+    build: .
+    container_name: nginx
+    volumes:
+      - www:/usr/share/nginx/
+    depends_on:
+      git:
+        condition: service_completed_successfully
+    networks:
+      - internal_net
+
+  openvpn:
+    image: pawi1/openvpn:arm64
+    network_mode: service:nginx
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+      - MKNOD
+    volumes:
+      - ./ovpn:/home
+    user: "0"
+    command: --config /home/${OPENVPN_CONFIG}
+    depends_on:
+      nginx:
+        condition: service_started
+
+volumes:
+  www:
+
+networks:
+  internal_net:
+    driver: bridge
